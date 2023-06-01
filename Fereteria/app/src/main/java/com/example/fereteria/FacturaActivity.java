@@ -2,14 +2,14 @@ package com.example.fereteria;
 
 import static com.example.fereteria.DB.DBHelper.CONN;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,12 +32,12 @@ public class FacturaActivity extends AppCompatActivity {
         btnFacturar = (Button) findViewById(R.id.btnHacerPedido);
         btnLimpiarFactura = (Button) findViewById(R.id.btnClean);
         btnBuscarFactura = (Button) findViewById(R.id.btnBuscarPedidoOCliente);
-        btnBuscarPedido = (Button) findViewById(R.id.btnBuscarPedido);
+        btnBuscarPedido = (Button) findViewById(R.id.btnBuscarPedidoProducto);
         btnEliminarFactura = (Button) findViewById(R.id.btnEliminarPedido);
 
         txtValorFactura = (EditText) findViewById(R.id.txtValorFactura);
         txtCodFactura = (EditText) findViewById(R.id.txtCodFactura);
-        txtCodPedido = (EditText) findViewById(R.id.txtCodPedido);
+        txtCodPedido = (EditText) findViewById(R.id.txtCodPedidoProducto);
         txtFechaFactura = (EditText) findViewById(R.id.txtDescripcionPedido);
 
         txtCodFactura.setText("");

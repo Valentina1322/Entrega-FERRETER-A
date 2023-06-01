@@ -1,164 +1,118 @@
 package com.example.fereteria;
 
-import static com.example.fereteria.DB.DBHelper.CONN;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ProductosActivity extends AppCompatActivity {
 
     Button btnCrearProducto, btnBuscarProducto, btnActualizarProducto, btnLimpiarProducto, btnEliminarProducto;
     EditText txtCodProducto, txtValorProducto, txtDescripcionProducto;
-
-
+    DatabaseManager databaseManager;
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productos);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        txtCodProducto = (EditText) findViewById(R.id.txtCodProducto);
-        txtValorProducto = (EditText) findViewById(R.id.txtValorProducto);
-        txtDescripcionProducto = (EditText) findViewById(R.id.txtDescripcionProducto);
+        databaseManager = new DatabaseManager(this);
 
-        btnCrearProducto = (Button) findViewById(R.id.btnCrearProducto);
-        btnBuscarProducto = (Button) findViewById(R.id.btnBuscarProducto);
-        btnActualizarProducto = (Button) findViewById(R.id.btnActualizarProducto);
-        btnLimpiarProducto = (Button) findViewById(R.id.btnLimpiarProducto);
-        btnEliminarProducto = (Button) findViewById(R.id.btnEliminarProducto);
+        txtCodProducto = findViewById(R.id.txtCodProducto);
+        txtValorProducto = findViewById(R.id.txtValorProducto);
+        txtDescripcionProducto = findViewById(R.id.txtDescripcionProducto);
 
-
+        btnCrearProducto = findViewById(R.id.btnCrearProducto);
+        btnBuscarProducto = findViewById(R.id.btnBuscarProducto);
+        btnActualizarProducto = findViewById(R.id.btnActualizarProducto);
+        btnLimpiarProducto = findViewById(R.id.btnLimpiarProducto);
+        btnEliminarProducto = findViewById(R.id.btnEliminarProducto);
 
         btnCrearProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                create();
+                String codigo = txtCodProducto.getText().toString();
+                String descripcion = txtDescripcionProducto.getText().toString();
+                String valor = txtValorProducto.getText().toString();
+
+                long result = databaseManager.insertProducto(codigo, descripcion, valor);
+                if (result != -1) {
+                    Toast.makeText(getApplicationContext(), "REGISTRO GUARDADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    limpiarProducto();
+                } else {
+                    Toast.makeText(getApplicationContext(), "ERROR AL GUARDAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
+
         btnBuscarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String codigo = txtCodProducto.getText().toString();
+                Producto producto = databaseManager.getProductoById(codigo);
+                if (producto != null) {
+                    txtDescripcionProducto.setText(producto.getDescripcion());
+                    txtValorProducto.setText(producto.getValor());
+                    Toast.makeText(getApplicationContext(), "REGISTRO CARGADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "REGISTRO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
+                }
 
-                getById();
             }
         });
+
         btnActualizarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                update();
-            }
+                String codigo = txtCodProducto.getText().toString();
+                String descripcion = txtDescripcionProducto.getText().toString();
+                String valor = txtValorProducto.getText().toString();
+                int result = databaseManager.updateProducto(codigo, descripcion, valor);
+                if (result > 0) {
+                    Toast.makeText(getApplicationContext(), "REGISTRO MODIFICADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    limpiarProducto();
+                } else {
+                    Toast.makeText(getApplicationContext(), "ERROR AL MODIFICAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                }
 
+            }
         });
+
         btnLimpiarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                txtCodProducto.setText("");
-                txtValorProducto .setText("");
-                txtDescripcionProducto.setText("");
-
-
+                limpiarProducto();
             }
         });
+
         btnEliminarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete();
+                String codigo = txtCodProducto.getText().toString();
 
-            }
-        });
+                int result = databaseManager.deleteProducto(codigo);
 
-
-    }
-
-    public void create() {
-        Connection _connection = CONN();
-        try {
-            if (!txtCodProducto.getText().toString().isEmpty()){
-
-                if (_connection != null) {
-                    PreparedStatement prepareState = _connection.prepareStatement("INSERT INTO producto Values(?,?,?,?,?,?,?,?)");
-
-                    prepareState.setString(1, txtCodProducto.getText().toString());
-                    prepareState.setString(2, txtDescripcionProducto.getText().toString());
-                    prepareState.setString(3, txtValorProducto.getText().toString());
-
-                    prepareState.executeUpdate();
-                    Toast.makeText(getApplicationContext(), "Registro guardado exitosamente", Toast.LENGTH_SHORT).show();
+                if (result > 0) {
+                    Toast.makeText(getApplicationContext(), "REGISTRO ELIMINADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    limpiarProducto();
+                } else {
+                    Toast.makeText(getApplicationContext(), "ERROR AL ELIMINAR EL REGISTRO", Toast.LENGTH_SHORT).show();
                 }
             }
-            else{
-                Toast.makeText(getApplicationContext(), "No pueden existir campos vacíos", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        });
     }
-
-    // Actualizar
-    public void update() {
-        Connection _connection = CONN();
-
-        try {
-            if (_connection != null) {
-                PreparedStatement prepareState = _connection.prepareStatement("UPDATE producto set codigo_producto='" + txtCodProducto.getText().toString() + "',descripcion='" + txtDescripcionProducto.getText().toString() + "',valor='" + txtValorProducto.getText().toString() + "'");
-
-                prepareState.executeUpdate();
-                Toast.makeText(getApplicationContext(), "Registro actualizado exitosamente", Toast.LENGTH_SHORT).show();
-            }
-        } catch (SQLException e) {
-            Log.e("ERROR", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //Borrar
-    public void delete() {
-        Connection _connection = CONN();
-        try {
-            if (_connection != null) {
-                PreparedStatement prepareState = _connection.prepareStatement("DELETE FROM producto Where codigo_producto= '" + txtCodProducto.getText().toString() + "'");
-                prepareState.executeUpdate();
-                Toast.makeText(getApplicationContext(), "Registro eliminado exitosamente", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e) {
-            Log.e("ERROR", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //Consultar
-    public void getById() {
-        try {
-            Connection _connection = CONN();
-            Statement prepareState = _connection.createStatement();
-            ResultSet rs = prepareState.executeQuery("SELECT*FROM clientes Where codigo_producto= '" + txtCodProducto.getText().toString() + "'");
-
-            if (rs.next()) {
-                txtCodProducto.setText(rs.getString(1));
-                txtDescripcionProducto.setText(rs.getString(1));
-                txtValorProducto.setText(rs.getString(2));
-
-            }
-
-            Toast.makeText(getApplicationContext(), "Registro cargado exitosamente", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    private void limpiarProducto(){
+        txtCodProducto.setText("");
+        txtValorProducto.setText("");
+        txtDescripcionProducto.setText("");
     }
 }

@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.857"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCodPedido" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCodPedidoProducto" />
 
     <EditText
         android:id="@+id/txtValorFactura"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcionPedido" />
 
     <Button
-        android:id="@+id/btnBuscarPedido"
+        android:id="@+id/btnBuscarPedidoProducto"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
@@ -45,15 +45,15 @@
         app:layout_constraintTop_toBottomOf="@+id/btnBuscarPedidoOCliente" />
 
     <EditText
-        android:id="@+id/txtCodPedido"
+        android:id="@+id/txtCodPedidoProducto"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Código Producto"
+        android:hint="Código Pedido"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/btnBuscarPedido"
+        app:layout_constraintEnd_toStartOf="@+id/btnBuscarPedidoProducto"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCodFactura" />

@@ -6,11 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".PedidosActivity">
 
+    <EditText
+        android:id="@+id/txtCodFactura"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Código factura"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtCedulaPedido"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Cédula"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCodFactura" />
+
+    <EditText
+        android:id="@+id/txtNombrePedido"
+        android:layout_width="374dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Nombres"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCedulaPedido" />
+
     <Button
         android:id="@+id/btnLimpiarProductoPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:text="Limpiar Producto"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,24 +58,37 @@
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="27dp"
         android:text="Limpiar"
         app:layout_constraintEnd_toStartOf="@+id/btnLimpiarProductoPedido"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCantproductoPedido" />
 
-    <EditText
-        android:id="@+id/txtCodPedido"
+    <Button
+        android:id="@+id/btnEliminarPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Eliminar Pedido"
+        app:layout_constraintEnd_toStartOf="@+id/btnHacerPedido"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnClean" />
+
+    <EditText
+        android:id="@+id/txtCodPedidoProducto"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="35dp"
         android:ems="10"
         android:hint="Código Producto"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/btnBuscarPedido"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@+id/btnBuscarPedidoProducto"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtFechaPedido" />
 
@@ -46,21 +96,21 @@
         android:id="@+id/txtDescripcionPedido"
         android:layout_width="375dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Descripciòn"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintHorizontal_bias="0.642"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCodPedido" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCodPedidoProducto" />
 
     <Button
-        android:id="@+id/btnBuscarPedido"
+        android:id="@+id/btnBuscarPedidoProducto"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:text="Buscar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,13 +120,13 @@
         android:id="@+id/txtCantproductoPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="31dp"
         android:ems="10"
         android:hint="Cantidad"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/txtValorProductoPedido"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescripcionPedido" />
 
@@ -84,7 +134,7 @@
         android:id="@+id/txtValorProductoPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Valor"
@@ -102,31 +152,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLimpiarProductoPedido" />
 
-    <Button
-        android:id="@+id/btnEliminarPedido"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="Eliminar Pedido"
-        app:layout_constraintEnd_toStartOf="@+id/btnHacerPedido"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnClean" />
-
     <EditText
         android:id="@+id/txtDireccionPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="Dirección"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/txtTelefonoPedido"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCedulaPedido" />
+        app:layout_constraintTop_toBottomOf="@+id/txtNombrePedido" />
 
     <EditText
         android:id="@+id/txtFechaPedido"
@@ -138,7 +176,7 @@
         android:hint="Fecha"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDireccionPedido" />
 
@@ -146,8 +184,8 @@
         android:id="@+id/txtTelefonoPedido"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:hint="Telefono"
         android:inputType="textPersonName"
@@ -155,57 +193,29 @@
         app:layout_constraintTop_toBottomOf="@+id/txtNombrePedido"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/txtCodFactura"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="Código"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/btnBuscarPedidoOCliente"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/txtCedulaPedido"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
-        android:ems="10"
-        android:hint="Cédula"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/txtNombrePedido"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCodFactura" />
-
-    <EditText
-        android:id="@+id/txtNombrePedido"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="Nombres"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBuscarPedidoOCliente" />
-
     <Button
         android:id="@+id/btnBuscarPedidoOCliente"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:text="Buscar Cliente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtCedulaPedido"
+        app:layout_constraintTop_toBottomOf="@+id/btnBuscarPedidoOC" />
+
+    <Button
+        android:id="@+id/btnBuscarPedidoOC"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="12dp"
         android:text="Buscar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txtCodFactura"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

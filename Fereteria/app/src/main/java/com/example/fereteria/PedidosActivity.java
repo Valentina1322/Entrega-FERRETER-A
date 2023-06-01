@@ -1,242 +1,205 @@
 package com.example.fereteria;
 
-import static com.example.fereteria.DB.DBHelper.CONN;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PedidosActivity extends AppCompatActivity {
-    Button btnBuscarPedidoOCliente, btnBuscarPedido, btnClean, btnHacerPedido, btnEliminarPedido, btnLimpiarProductoPedido;
-    EditText txtCodPedido, txtFechaPedido, txtCedulaPedido, txtNombrePedido, txtDireccionPedido, txtTelefonoPedido, txtCodProductoPedido, txtCantproductoPedido, txtValorProductoPedido, txtDescripcionPedido;
+    EditText txtCodPedidoProducto, txtFechaPedido, txtCedulaPedido, txtNombrePedido, txtDireccionPedido, txtTelefonoPedido, txtCodProductoPedido, txtCantproductoPedido, txtValorProductoPedido, txtDescripcionPedido, txtCodFactura;
+    Button btnBuscarPedidoOCliente, btnBuscarPedidoProducto, btnClean, btnHacerPedido, btnEliminarPedido, btnLimpiarProductoPedido, btnBuscarPedidoOC;
 
-
+    DatabaseManager dataBaseManager;
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        txtCodPedido = (EditText) findViewById(R.id.txtCodPedido);
-        txtCedulaPedido = (EditText) findViewById(R.id.txtCedulaPedido);
-        txtNombrePedido = (EditText) findViewById(R.id.txtNombrePedido);
-        txtDireccionPedido = (EditText) findViewById(R.id.txtDireccionPedido);
-        txtTelefonoPedido = (EditText) findViewById(R.id.txtTelefonoPedido);
-        txtFechaPedido = (EditText) findViewById(R.id.txtFechaPedido);
-        txtDescripcionPedido = (EditText) findViewById(R.id.txtDescripcionPedido);
+        dataBaseManager = new DatabaseManager(this);
 
-        txtTelefonoPedido = (EditText) findViewById(R.id.txtTelefonoPedido);
-        txtCodProductoPedido = (EditText) findViewById(R.id.txtCodPedido);
-        txtCantproductoPedido = (EditText) findViewById(R.id.txtCantproductoPedido);
-        txtValorProductoPedido = (EditText) findViewById(R.id.txtValorProductoPedido);
+        txtCodPedidoProducto = findViewById(R.id.txtCodPedidoProducto);
+        txtCedulaPedido = findViewById(R.id.txtCedulaPedido);
+        txtNombrePedido = findViewById(R.id.txtNombrePedido);
+        txtDireccionPedido = findViewById(R.id.txtDireccionPedido);
+        txtTelefonoPedido = findViewById(R.id.txtTelefonoPedido);
+        txtFechaPedido = findViewById(R.id.txtFechaPedido);
+        txtDescripcionPedido = findViewById(R.id.txtDescripcionPedido);
+        txtCodFactura = findViewById(R.id.txtCodFactura);
 
-        btnBuscarPedidoOCliente = (Button) findViewById(R.id.btnBuscarPedidoOCliente);
-        btnBuscarPedido = (Button) findViewById(R.id.btnBuscarPedido);
-        btnClean = (Button) findViewById(R.id.btnClean);
-        btnHacerPedido = (Button) findViewById(R.id.btnHacerPedido);
-        btnEliminarPedido = (Button) findViewById(R.id.btnHacerPedido);
-        btnLimpiarProductoPedido = (Button) findViewById(R.id.btnLimpiarProductoPedido);
+        txtTelefonoPedido = findViewById(R.id.txtTelefonoPedido);
+        txtCodProductoPedido = findViewById(R.id.txtCodPedidoProducto);
+        txtCantproductoPedido = findViewById(R.id.txtCantproductoPedido);
+        txtValorProductoPedido = findViewById(R.id.txtValorProductoPedido);
 
+        btnBuscarPedidoOCliente = findViewById(R.id.btnBuscarPedidoOCliente);
+        btnBuscarPedidoProducto = findViewById(R.id.btnBuscarPedidoProducto);
+        btnClean = findViewById(R.id.btnClean);
+        btnHacerPedido = findViewById(R.id.btnHacerPedido);
+        btnEliminarPedido = findViewById(R.id.btnEliminarPedido);
+        btnLimpiarProductoPedido = findViewById(R.id.btnLimpiarProductoPedido);
+        btnBuscarPedidoOC = findViewById(R.id.btnBuscarPedidoOC);
 
         btnBuscarPedidoOCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!txtCodPedido.getText().toString().isEmpty() && txtCedulaPedido.getText().toString().isEmpty()){
+                if (!txtCedulaPedido.getText().toString().isEmpty()) {
+                    String cedula = txtCedulaPedido.getText().toString().trim();
+                    Client cliente = dataBaseManager.getClientByCedula(cedula);
 
-                    getByIdPedido();
+                    if (cliente != null) {
+                        txtCedulaPedido.setText(cliente.getCedula());
+                        txtNombrePedido.setText(cliente.getNombre());
+                        txtDireccionPedido.setText(cliente.getDireccion());
+                        txtTelefonoPedido.setText(cliente.getTelefono());
+
+                        Toast.makeText(getApplicationContext(), "REGISTRO CARGADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "REGISTRO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                if (!txtCedulaPedido.getText().toString().isEmpty() && txtCodPedido.getText().toString().isEmpty()){
+                else {
+                    if (txtCodPedidoProducto.getText().toString().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "REGISTRO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
 
-                    getByIdPedido();
+                    }
                 }
-                else{
-
-                    Toast.makeText(getApplicationContext(), "Solo puedes buscar por código de pedido o por cédula", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnBuscarPedidoOC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String codFactura = txtCodFactura.getText().toString();
+                Pedido pedido = null;
+                Client cliente = null;
+                if (txtCodFactura.getText().toString().trim() != null) {
+                    pedido = dataBaseManager.getPedidoById(codFactura);
+                }else{
+                    Toast.makeText(getApplicationContext(), "INGRESE EL NUMERO DE FACTURA", Toast.LENGTH_SHORT).show();
                 }
+                if (pedido != null) {
+                    cliente = dataBaseManager.getClientByCedula(pedido.getCedula());
+                }
+                int encontrado = 0;
+                if (pedido != null && cliente != null) {
+                    txtCodFactura.setText(pedido.getCodPedido());
+                    txtDescripcionPedido.setText(pedido.getDescripcion());
+                    txtFechaPedido.setText(pedido.getFecha());
+                    txtCantproductoPedido.setText(pedido.getCantidad());
+                    txtCodProductoPedido.setText(pedido.getCodProducto());
+                    txtCedulaPedido.setText(pedido.getCedula());
 
+                    txtCedulaPedido.setText(cliente.getCedula());
+                    txtNombrePedido.setText(cliente.getNombre());
+                    txtDireccionPedido.setText(cliente.getDireccion());
+                    txtTelefonoPedido.setText(cliente.getTelefono());
+
+                    Toast.makeText(getApplicationContext(), "REGISTRO CARGADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    encontrado = 1;
+                } else {
+                    encontrado = 0;
+                    if (encontrado == 0) {
+                        Toast.makeText(getApplicationContext(), "REGISTRO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        btnBuscarPedidoProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String codProducto = txtCodProductoPedido.getText().toString().trim();
+                Producto producto = dataBaseManager.getProductoById(codProducto);
+                if (producto != null) {
+                    txtDescripcionPedido.setText(producto.getDescripcion());
+                    Toast.makeText(getApplicationContext(), "REGISTRO CARGADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "REGISTRO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crear();
-            }
+                if (!txtCodPedidoProducto.getText().toString().trim().isEmpty() && !txtCodProductoPedido.getText().toString().trim().isEmpty() && !txtCedulaPedido.getText().toString().trim().isEmpty()){
 
+                    String codFactura = txtCodFactura.getText().toString().trim();
+                    String descripcion = txtDescripcionPedido.getText().toString().trim();
+                    String fecha = txtFechaPedido.getText().toString().trim();
+                    String cantidad = txtCantproductoPedido.getText().toString().trim();
+                    String codProducto = txtCodProductoPedido.getText().toString().trim();
+                    String cedula = txtCedulaPedido.getText().toString().trim();
+                    long result = dataBaseManager.insertPedido(codFactura, descripcion, fecha, cantidad, codProducto, cedula);
+                    if (result != -1) {
+                        Toast.makeText(getApplicationContext(), "REGISTRO GUARDADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                        limpiarCampos();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ERROR AL GUARDAR EL REGISTRO", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "HAY CAMPOS VACÍOS", Toast.LENGTH_SHORT).show();
+                }
+
+            }
         });
+
         btnLimpiarProductoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtCodProductoPedido.setText("");
-                txtCantproductoPedido.setText("");
-                txtValorProductoPedido.setText("");
+                limpiarProductoPedido();
             }
         });
+
         btnClean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtCodPedido.setText("");
-                txtCedulaPedido.setText("");
-                txtNombrePedido.setText("");
-                txtDireccionPedido.setText("");
-                txtTelefonoPedido.setText("");
-                txtCodProductoPedido.setText("");
-                txtCantproductoPedido.setText("");
-                txtValorProductoPedido.setText("");
+                limpiarCampos();
             }
         });
 
         btnEliminarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                delete();
-            }
-        });
-
-    }
-
-    public void crear() {
-        Connection _connection = CONN();
-        try {
-            if (!txtCedulaPedido.getText().toString().isEmpty()){
-
-                if (_connection != null) {
-                    PreparedStatement prepareState = _connection.prepareStatement("INSERT INTO pedido Values(?,?,?,?,?,?,)");
-
-                    prepareState.setString(1, txtCodPedido.getText().toString());
-                    prepareState.setString(2, txtDescripcionPedido.getText().toString());
-                    prepareState.setString(3, txtFechaPedido.getText().toString());
-                    prepareState.setString(4, txtCantproductoPedido.getText().toString());
-                    prepareState.setString(5, txtCantproductoPedido.getText().toString());
-                    prepareState.setString(6, txtCedulaPedido.getText().toString());
-
-                    prepareState.executeUpdate();
-                    Toast.makeText(getApplicationContext(), "Registro guardado exitosamente", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                String condFactura = txtCodFactura.getText().toString().trim();
+                int result = dataBaseManager.deletePedido(condFactura);
+                if (result > 0) {
+                    Toast.makeText(getApplicationContext(), "REGISTRO ELIMINADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                    limpiarCampos();
+                } else {
+                    Toast.makeText(getApplicationContext(), "ERROR AL ELIMINAR EL REGISTRO", Toast.LENGTH_SHORT).show();
                 }
             }
-            else{
-                Toast.makeText(getApplicationContext(), "El campo cedula no puede estar vacío", Toast.LENGTH_SHORT).show();
-
-            }
-
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        });
+    }
+    private void limpiarCampos() {
+        txtCodFactura.setText("");
+        txtCodPedidoProducto.setText("");
+        txtCedulaPedido.setText("");
+        txtNombrePedido.setText("");
+        txtDireccionPedido.setText("");
+        txtTelefonoPedido.setText("");
+        txtCodProductoPedido.setText("");
+        txtCantproductoPedido.setText("");
+        txtValorProductoPedido.setText("");
+        txtDescripcionPedido.setText("");
+        txtFechaPedido.setText("");
     }
 
-    public void update() {
-        Connection _connection = CONN();
-
-        try {
-            if (_connection != null) {
-                PreparedStatement prepareState = _connection.prepareStatement("UPDATE producto set codigo_pedido='" + txtCodPedido.getText().toString() + "',descripcion='" + txtDescripcionPedido.getText().toString() + "',fecha='" + txtFechaPedido.getText().toString() + "',cantidad='" + txtCantproductoPedido.getText().toString() + "',codigo_producto='" + txtCodProductoPedido.getText().toString() + "',cedula='" + txtCedulaPedido.getText().toString() + "'");
-
-                prepareState.executeUpdate();
-                Toast.makeText(getApplicationContext(), "Registro actualizado exitosamente", Toast.LENGTH_SHORT).show();
-            }
-        } catch (SQLException e) {
-            Log.e("ERROR", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    private void limpiarProductoPedido() {
+        txtCodProductoPedido.setText("");
+        txtCantproductoPedido.setText("");
+        txtValorProductoPedido.setText("");
+        txtDescripcionPedido.setText("");
     }
-
-    //Borrar
-    public void delete() {
-        Connection _connection = CONN();
-        try {
-            if (_connection != null) {
-                PreparedStatement prepareState = _connection.prepareStatement("DELETE FROM producto Where codigo_producto= '" + txtCedulaPedido.getText().toString() + "'");
-                prepareState.executeUpdate();
-                Toast.makeText(getApplicationContext(), "Registro eliminado exitosamente", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (Exception e) {
-            Log.e("ERROR", e.getMessage());
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //Consultar
-    public void getByIdPedido() {
-        try {
-            Connection _connection = CONN();
-            Statement prepareState = _connection.createStatement();
-            ResultSet rs = prepareState.executeQuery("SELECT*FROM pedido Where codigo_pedido= '" + txtCodPedido.getText().toString() + "'");
-
-            if (rs.next()) {
-                txtCodPedido.setText(rs.getString(1));
-                txtDescripcionPedido.setText(rs.getString(2));
-                txtFechaPedido.setText(rs.getString(3));
-                txtCantproductoPedido.setText(rs.getString(4));
-                txtCodProductoPedido.setText(rs.getString(5));
-                txtCedulaPedido.setText(rs.getString(6));
-
-            }
-
-            Toast.makeText(getApplicationContext(), "Registro cargado exitosamente", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void getByIdCliente() {
-        try {
-            Connection _connection = CONN();
-            Statement prepareState = _connection.createStatement();
-            ResultSet rs = prepareState.executeQuery("SELECT*FROM clientes Where cedula= '" + txtCedulaPedido.getText().toString() + "'");
-
-            if (rs.next()) {
-
-                txtCedulaPedido.setText(rs.getString(1));
-                txtNombrePedido.setText(rs.getString(2));
-                txtDireccionPedido.setText(rs.getString(3));
-                txtTelefonoPedido.setText(rs.getString(4));
-            }
-
-            Toast.makeText(getApplicationContext(), "Registros cargados exitosamente", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void getByIdProducto() {
-        try {
-            Connection _connection = CONN();
-            Statement prepareState = _connection.createStatement();
-            ResultSet rs = prepareState.executeQuery("SELECT*FROM pedido Where codigo_pedido= '" + txtCodPedido.getText().toString() + "'");
-
-            if (rs.next()) {
-                txtCodPedido.setText(rs.getString(1));
-                txtDireccionPedido.setText(rs.getString(2));
-                txtFechaPedido.setText(rs.getString(3));
-                txtCodProductoPedido.setText(rs.getString(4));
-                txtCedulaPedido.setText(rs.getString(5));
-
-            }
-
-            Toast.makeText(getApplicationContext(), "Registro cargado exitosamente", Toast.LENGTH_SHORT).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
 }
-
-
-

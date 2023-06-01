@@ -36,7 +36,7 @@
         android:layout_marginEnd="140dp"
         android:text="Limpiar"
         app:layout_constraintEnd_toStartOf="@+id/btnEliminar"
-        app:layout_constraintHorizontal_bias="0.866"
+        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCrear" />
 
@@ -45,15 +45,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="38dp"
         android:text="Pedidos"
         app:layout_constraintEnd_toStartOf="@+id/btnFacturasActivity"
-        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLimpiar" />
 
     <Button
+        android:enabled="false"
         android:id="@+id/btnFacturasActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,6 +63,7 @@
         android:text="Facturas"
         app:layout_constraintEnd_toStartOf="@+id/btnProductosActivity"
         app:layout_constraintTop_toBottomOf="@+id/btnLimpiar" />
+
 
     <Button
         android:id="@+id/btnProductosActivity"
